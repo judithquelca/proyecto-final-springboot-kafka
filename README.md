@@ -4,14 +4,14 @@
 Judith Quelca - Curso Spring Boot & Kafka
 
 ## REPOSITORIOS
-
+- ecommerce-product-service (9495)
 https://github.com/judithquelca/ecommerce-product-service
 
+- ecommerce-ecommerce-order-service (8081)
 https://github.com/judithquelca/ecommerce-order-service
 
+- ecommerce-inventory-service (8082)
 https://github.com/judithquelca/ecommerce-inventory-service
-
-## 3. Requisitos obligatorios (por criterio)
 
 ### 3.1 Documentación (25 pts)
 
@@ -28,25 +28,44 @@ https://github.com/judithquelca/ecommerce-inventory-service
   - `controller`, `service`, `repository`, `model`, `dto`, `mapper`, `exception`, `kafka`.
 - Archivos de configuración en `src/main/resources` (`application.yml`, `application-dev.yml`, `application-prod.yml`, `ValidationMessages.properties`).
 
-## Arquitectura y estructura
+### Arquitectura y estructura
 
 ### Capas de cada servicio
 
+- product-service
 ![Imagen de contenedor descargada](recursos/productCapas.png)
+
+- order-service
 ![Imagen de contenedor descargada](recursos/orderCapas.png)
-![Imagen de contenedor descargada](recursos/orderCapas.png)
+
+- inventory-service
+![Imagen de contenedor descargada](recursos/inventoryCapas.png)
 
 
 ### Archivos de configuración
+- Los archivos de configuración que se tiene son los siguientes:
+  - application.yml
+  - application-dev.yml
+  - application-prod.yml
+  - ValidationMessages.properties
+
 ![Imagen de contenedor descargada](recursos/archivosConfiguracion.png)
-- application.yml
-- application-dev.yml
-- application-prod.yml
-- ValidationMessages.properties
+
+- Configuración de variables de entorno
+![Imagen de contenedor descargada](recursos/variablesEntorno.png)
+
+- Entorno de desarrollo
+
+![Imagen de contenedor descargada](recursos/entornoDev.png)
+
+- Entorno de producción
+![Imagen de contenedor descargada](recursos/entornoProductivo.png)
+
+![Imagen de contenedor descargada](recursos/verificaProd.png)
 
 
 
-### 3.3 Funcionalidad REST y validaciones
+### Funcionalidad REST y validaciones
 
 - **product-service**: CRUD completo de productos + categoría, validaciones en DTOs, eventos `ecommerce.products.created`.
 - **order-service**: creación/listado/búsqueda de órdenes con estados PENDING/CONFIRMED/CANCELLED, producción de `ecommerce.orders.placed`, consumo de confirmaciones/cancelaciones.
@@ -54,63 +73,69 @@ https://github.com/judithquelca/ecommerce-inventory-service
 - Bean Validation con mensajes en `ValidationMessages.properties`.
 - `GlobalExceptionHandler` con respuestas claras para errores comunes.
 
+- **product-service**
 
-- Validaciones
-Crear archivo ValidationMessages.properties
 
-Adicionar la dependencia en archivo pom.xml
+- **order-service**
 
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-validation</artifactId>
-</dependency>
+- **inventory-service**
 
-Actualizar el archivo application.yml
+
+- **Validaciones**
+  - Crear archivo ValidationMessages.properties
+  - Adicionar la dependencia en archivo pom.xml
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+  - Actualizar el archivo application.yml
 
 spring:
   messages:
     basename: ValidationMessages
 
-- Valicacion de orderservice
+  - Valicacion de orderservice
 
-order.product.notblank=El ID del producto es requerido
-order.product.positive=El ID del producto debe ser positivo
-order.quantity.notblank =La cantidad es requerida
-order.quantity.positivew=La cantidad debe ser positiva
-order.quantity.max=La cantidad no puede exceder 100
-order.name.notblank=El nombre del cliente es requerido
-order.name.min=El nombre debe tener entre 3 y 100 caracteres
-order.email.notblank=El email del cliente es requerido
-order.email.email=El email debe ser válido
-order.totalAmount.notblank=El monto total es requerido
-order.totalAmount.positive=El monto total debe ser positivo
+		order.product.notblank=El ID del producto es requerido
+		order.product.positive=El ID del producto debe ser positivo
+		order.quantity.notblank =La cantidad es requerida
+		order.quantity.positivew=La cantidad debe ser positiva
+		order.quantity.max=La cantidad no puede exceder 100
+		order.name.notblank=El nombre del cliente es requerido
+		order.name.min=El nombre debe tener entre 3 y 100 caracteres
+		order.email.notblank=El email del cliente es requerido
+		order.email.email=El email debe ser válido
+		order.totalAmount.notblank=El monto total es requerido
+		order.totalAmount.positive=El monto total debe ser positivo
 
 
-public record OrderRequest(
+		public record OrderRequest(
 
-        @NotNull(message = "{order.product.notblank}")
-        @Positive(message = "{order.product.positive}")
-        Long productId,
+				@NotNull(message = "{order.product.notblank}")
+				@Positive(message = "{order.product.positive}")
+				Long productId,
 
-        @NotNull(message = "{order.quantity.notblank}")
-        @Positive(message = "{order.quantity.positive}")
-        @Max(value = 100, message = "{order.quantity.max}")
-        Integer quantity,
+				@NotNull(message = "{order.quantity.notblank}")
+				@Positive(message = "{order.quantity.positive}")
+				@Max(value = 100, message = "{order.quantity.max}")
+				Integer quantity,
 
-        @NotBlank(message = "{order.name.notblank}")
-        @Size(min = 3, max = 100, message = "{order.name.min}")
-        String customerName,
+				@NotBlank(message = "{order.name.notblank}")
+				@Size(min = 3, max = 100, message = "{order.name.min}")
+				String customerName,
 
-        @NotBlank(message = "{order.email.notblank}")
-        @Email(message = "{order.email.email}")
-        String customerEmail,
+				@NotBlank(message = "{order.email.notblank}")
+				@Email(message = "{order.email.email}")
+				String customerEmail,
 
-        @NotNull(message = "{order.totalAmount.notblank}")
-        @Positive(message = "{order.totalAmount.positive}")
-        BigDecimal totalAmount
+				@NotNull(message = "{order.totalAmount.notblank}")
+				@Positive(message = "{order.totalAmount.positive}")
+				BigDecimal totalAmount
 
-) {
-}
+		) {
+		}
 
 ![Imagen de contenedor descargada](recursos/orderValid.png)
 
