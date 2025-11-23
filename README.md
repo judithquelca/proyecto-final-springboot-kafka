@@ -30,19 +30,22 @@ https://github.com/judithquelca/ecommerce-inventory-service
 
 ### Arquitectura y estructura
 
-### Capas de cada servicio
+#### Capas de cada servicio
 
 - product-service
+
 ![Imagen de contenedor descargada](recursos/productCapas.png)
 
 - order-service
+
 ![Imagen de contenedor descargada](recursos/orderCapas.png)
 
 - inventory-service
+
 ![Imagen de contenedor descargada](recursos/inventoryCapas.png)
 
 
-### Archivos de configuración
+#### Archivos de configuración
 - Los archivos de configuración que se tiene son los siguientes:
   - application.yml
   - application-dev.yml
@@ -92,9 +95,9 @@ https://github.com/judithquelca/ecommerce-inventory-service
 
   - Actualizar el archivo application.yml
 
-spring:
-  messages:
-    basename: ValidationMessages
+		spring:
+		  messages:
+			basename: ValidationMessages
 
   - Valicacion de orderservice
 
@@ -137,61 +140,55 @@ spring:
 		) {
 		}
 
-![Imagen de contenedor descargada](recursos/orderValid.png)
+		![Imagen de contenedor descargada](recursos/orderValid.png)
 
 
-- Validacion de inventoryservice	
-inventory.product.notblank=El ID del producto es requerido
-inventory.product.name=El nombre del producto es requerido
-inventory.stock.notblank =El stock inicial es requerido
-inventory.stock.positive=El stock inicial debe ser no negativo
+	- Validacion de inventoryservice
+	
+		inventory.product.notblank=El ID del producto es requerido
+		inventory.product.name=El nombre del producto es requerido
+		inventory.stock.notblank =El stock inicial es requerido
+		inventory.stock.positive=El stock inicial debe ser no negativo
 
-public record InventoryItemRequest (
+		public record InventoryItemRequest (
 
-    @NotNull(message = "{inventory.product.notblank}")
-    Long productId,
+			@NotNull(message = "{inventory.product.notblank}")
+			Long productId,
 
-    @NotBlank(message = "{inventory.product.name}")
-    String productName,
+			@NotBlank(message = "{inventory.product.name}")
+			String productName,
 
-    @NotNull(message = "{inventory.stock.notblank}")
-    @Min(value = 0, message = "{inventory.stock.positive}")
-    Integer initialStock
-){
-}
+			@NotNull(message = "{inventory.stock.notblank}")
+			@Min(value = 0, message = "{inventory.stock.positive}")
+			Integer initialStock
+		){
+		}
 
-- `GlobalExceptionHandler` con respuestas claras para errores comunes.
-# Adición de la clase GlobalExceptionHandler
-- Crear paquete exception
- src/main/java/dev/judyquelca/productservice/exception
+ - **Adición de la clase GlobalExceptionHandler**
 
+	- Crear las siguientes clases dentro del paquete exception
+		- ErrorResponse.java
+        - ResourceNotFoundException.java
+		- GlobalExceptionHandler.java
+		
+    - Actualización para lanzar excepciones
+        - OrderService.java
 
-code src/main/java/dev/judyquelca/productservice/exception/ErrorResponse.java
+			  @Transactional(readOnly = true)
+				public OrderResponse findById(Long id) {
+					Order order = orderRepository.findById(id)
+							.orElseThrow(() -> new OrderNotFoundException("Orden " + id + " no encontrado"));
+					return OrderMapper.toResponse(order);
+				}
 
-# 4. Crear ResourceNotFoundException
-code src/main/java/dev/judyquelca/productservice/exception/ResourceNotFoundException.java
+		![Imagen de contenedor descargada](recursos/orderException.png)
 
-# 5. Crear GlobalExceptionHandler
-code src/main/java/dev/judyquelca/productservice/exception/GlobalExceptionHandler.java
-
-# Actualización para lanzar excepciones
- src/main/java/dev/judyquelca/orderservice/service/OrderService.java
-
-  @Transactional(readOnly = true)
-    public OrderResponse findById(Long id) {
-        Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new OrderNotFoundException("Orden " + id + " no encontrado"));
-        return OrderMapper.toResponse(order);
-    }
-
-![Imagen de contenedor descargada](recursos/orderException.png)
-
-![Imagen de contenedor descargada](recursos/inventoryException.png)
+		![Imagen de contenedor descargada](recursos/inventoryException.png)
 
 
-### 3.4 Kafka
+### Kafka
 
-- Topics obligatorios (5 particiones, 1 réplica):
+- Actualización de Topics (5 particiones, 1 réplica):
   - ecommerce.products.created
   - ecommerce.orders.placed
   - ecommerce.orders.confirmed
@@ -202,98 +199,93 @@ code src/main/java/dev/judyquelca/productservice/exception/GlobalExceptionHandle
 - Evidencia en README (logs o captura) mostrando el flujo completo: orden → validación inventario → confirmación/cancelación.
 
 - Se verifica que Kafka está corriendo
-  docker compose ps
 
-  docker exec -it kafka bash
+	- docker compose ps
+	- docker exec -it kafka bash
 
-  Actualmente esta es la listar topics existentes
-kafka-topics --bootstrap-server localhost:9092 --list
-![Imagen de contenedor descargada](recuarsos/listKafkaActual.png)
+  - Actualmente esta es la lista topics existentes
+     
+	 - kafka-topics --bootstrap-server localhost:9092 --list
+       ![Imagen de contenedor descargada](recuarsos/listKafkaActual.png)
 
-ecommerce.inventory.updated
-ecommerce.orders.cancelled
-ecommerce.orders.confirmed
-ecommerce.orders.placed
-ecommerce.products.created
+			
+	- Con los siguientes comandos se actualiza el número de Topics
+  
+		  kafka-topics --bootstrap-server localhost:9092 --alter --topic ecommerce.products.created --partitions 5
+		  kafka-topics --bootstrap-server localhost:9092 --alter --topic ecommerce.orders.placed --partitions 5
+		  kafka-topics --bootstrap-server localhost:9092 --alter --topic ecommerce.orders.confirmed --partitions 5
+		  kafka-topics --bootstrap-server localhost:9092 --alter --topic ecommerce.orders.cancelled --partitions 5
+		  kafka-topics --bootstrap-server localhost:9092 --alter --topic ecommerce.inventory.updated --partitions 5
 
-  kafka-topics --bootstrap-server localhost:9092 --alter --topic ecommerce.products.created --partitions 5
-  kafka-topics --bootstrap-server localhost:9092 --alter --topic ecommerce.orders.placed --partitions 5
-  kafka-topics --bootstrap-server localhost:9092 --alter --topic ecommerce.orders.confirmed --partitions 5
-  kafka-topics --bootstrap-server localhost:9092 --alter --topic ecommerce.orders.cancelled --partitions 5
-  kafka-topics --bootstrap-server localhost:9092 --alter --topic ecommerce.inventory.updated --partitions 5
+		![Imagen de contenedor descargada](recursos/updateParticionKafk.png)
+		![Imagen de contenedor descargada](recursos/productsTopic.png)
+		![Imagen de contenedor descargada](recursos/orderPlacedTpic.png)
+		![Imagen de contenedor descargada](recursos/orderConfirmTopic.png)
+		![Imagen de contenedor descargada](recursos/orderCancelledTopic.png)
+		![Imagen de contenedor descargada](recursos/inventoryTopic.png)
 
-![Imagen de contenedor descargada](recursos/updateParticionKafk.png)
-![Imagen de contenedor descargada](recursos/productsTopic.png)
-![Imagen de contenedor descargada](recursos/orderPlacedTpic.png)
-![Imagen de contenedor descargada](recursos/orderConfirmTopic.png)
-![Imagen de contenedor descargada](recursos/orderCancelledTopic.png)
-![Imagen de contenedor descargada](recursos/inventoryTopic.png)
-
-  - configuracion de kafka con `spring.kafka` y `spring.json.type.mapping`.
-  - productservice
-  ![Imagen de contenedor descargada](recursos/inventoryTopic.png)
-  ![Imagen de contenedor descargada](recursos/productKafka.png)
+	- configuracion de kafka con `spring.kafka` y `spring.json.type.mapping`.
+	
+		- productservice
+		  ![Imagen de contenedor descargada](recursos/inventoryTopic.png)
+		  ![Imagen de contenedor descargada](recursos/productKafka.png)
 
   
   
-  - orderservice
-  ![Imagen de contenedor descargada](recursos/orderKafka.png)
-  
-  - inventoryservice
-  ![Imagen de contenedor descargada](recursos/inventoryKafka.png)
-  
-  
--  flujo con lo que se obtuvo de postman  
-
-![Imagen de contenedor descargada](recursos/tresProducts.png)
-![Imagen de contenedor descargada](recursos/ordenesCreadas.png)
-![Imagen de contenedor descargada](recursos/ordenConfirmada.png)
-
-### 3.5 Bases de datos y modelos
-
-- Tres bases PostgreSQL (`ecommerce`, `ecommerce_orders`, `ecommerce_inventory`). Explica cómo se crean (scripts SQL, docker exec, etc.).
-
-se crea con los siguientes script (desde la consola de postgres)
-CREATE DATABASE ecommerce;
-CREATE DATABASE ecommerce_orders;
-CREATE DATABASE ecommerce_inventory;
-
-![Imagen de contenedor descargada](recursos/baseDatos.png)
-
-En el archivo doker-compose.yml se debe confifugurar lo siguiente 
-  postgres:
-    image: postgres:15-alpine
-    container_name: product-db
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: ecommerce
-      POSTGRES_USER: ecommerce_user
-      POSTGRES_PASSWORD: ecommerce_password
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-
-![Imagen de contenedor descargada](recursos/dockerPostgres.png)
+		- orderservice
+		![Imagen de contenedor descargada](recursos/orderKafka.png)
 	  
+		- inventoryservice
+		![Imagen de contenedor descargada](recursos/inventoryKafka.png)
+  
+  
+	-  flujo con lo que se obtuvo de postman  
 
+		![Imagen de contenedor descargada](recursos/tresProducts.png)
+		![Imagen de contenedor descargada](recursos/ordenesCreadas.png)
+		![Imagen de contenedor descargada](recursos/ordenConfirmada.png)
 
-Adicionar en el archivo pom.xml, la dependencia
-<dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
+### Bases de datos y modelos
 
-![Imagen de contenedor descargada](recursos/pomPostgres.png)
+- Tres bases PostgreSQL (`ecommerce`, `ecommerce_orders`, `ecommerce_inventory`)
 
+ - se crea con los siguientes script (desde la consola de postgres)
+		CREATE DATABASE ecommerce;
+		CREATE DATABASE ecommerce_orders;
+		CREATE DATABASE ecommerce_inventory;
 
+		![Imagen de contenedor descargada](recursos/baseDatos.png)
 
+ - En el archivo doker-compose.yml se debe confifugurar lo siguiente 
+ 
+	  postgres:
+		image: postgres:15-alpine
+		container_name: product-db
+		restart: unless-stopped
+		environment:
+		  POSTGRES_DB: ecommerce
+		  POSTGRES_USER: ecommerce_user
+		  POSTGRES_PASSWORD: ecommerce_password
+		ports:
+		  - "5432:5432"
+		volumes:
+		  - postgres-data:/var/lib/postgresql/data
 
-- Entidades con relaciones correctas (Product–Category 1:N, etc.).
-- Documenta el modelo de datos (tabla o diagrama) y cualquier constraint relevante.
+		![Imagen de contenedor descargada](recursos/dockerPostgres.png)
+	
+	- Adicionar en el archivo pom.xml, la dependencia
+		<dependency>
+			<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<scope>runtime</scope>
+		</dependency>
 
-### 3.6 Configuración y variables (10 pts)
+		![Imagen de contenedor descargada](recursos/pomPostgres.png)
+
+	- Entidades con relaciones correctas (Product–Category 1:N, etc.).
+	- Documenta el modelo de datos (tabla o diagrama) y cualquier constraint relevante.
+
+### Configuración y variables 
 
 - Cada `application.yml` debe usar variables con fallback:
 
