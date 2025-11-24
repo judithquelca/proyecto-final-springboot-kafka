@@ -5,12 +5,15 @@ Judith Quelca - Curso Spring Boot & Kafka
 
 ## REPOSITORIOS
 - ecommerce-product-service (9495)
+
 https://github.com/judithquelca/ecommerce-product-service
 
 - ecommerce-ecommerce-order-service (8081)
+
 https://github.com/judithquelca/ecommerce-order-service
 
 - ecommerce-inventory-service (8082)
+
 https://github.com/judithquelca/ecommerce-inventory-service
 
 ### 3.1 Documentación (25 pts)
@@ -34,15 +37,15 @@ https://github.com/judithquelca/ecommerce-inventory-service
 
 - product-service
 
-![Imagen de contenedor descargada](recursos/productCapas.png)
+ ![Imagen de contenedor descargada](recursos/productCapas.png)
 
 - order-service
 
-![Imagen de contenedor descargada](recursos/orderCapas.png)
+ ![Imagen de contenedor descargada](recursos/orderCapas.png)
 
 - inventory-service
 
-![Imagen de contenedor descargada](recursos/inventoryCapas.png)
+ ![Imagen de contenedor descargada](recursos/inventoryCapas.png)
 
 
 #### Archivos de configuración
@@ -58,15 +61,12 @@ https://github.com/judithquelca/ecommerce-inventory-service
 ![Imagen de contenedor descargada](recursos/variablesEntorno.png)
 
 - Entorno de desarrollo
-
 ![Imagen de contenedor descargada](recursos/entornoDev.png)
 
 - Entorno de producción
 ![Imagen de contenedor descargada](recursos/entornoProductivo.png)
 
 ![Imagen de contenedor descargada](recursos/verificaProd.png)
-
-
 
 ### Funcionalidad REST y validaciones
 
@@ -78,10 +78,40 @@ https://github.com/judithquelca/ecommerce-inventory-service
 
 - **product-service**
 
+  - Creación de categoria
+  ![Imagen de contenedor descargada](recursos/createCategory.png)
+  
+   - Creación de producto
+  ![Imagen de contenedor descargada](recursos/createProducts.png)
+  
+   - Lista productos
+  ![Imagen de contenedor descargada](recursos/getAllProducts.png)
+  
+   -Lista producto por id
+  ![Imagen de contenedor descargada](recursos/getProductById.png)
 
 - **order-service**
 
+	- Creación de orden de producto
+	![Imagen de contenedor descargada](recursos/createOrderLaptop10.png)
+
+
 - **inventory-service**
+
+ - Creación de inventario
+ ![Imagen de contenedor descargada](recursos/createInventory.png)
+
+ - Lista todos los items inventarios
+  ![Imagen de contenedor descargada](recursos/getAllInventory.png)
+  
+ - Lista inventario por producto 
+  ![Imagen de contenedor descargada](recursos/getInventoryByPoructId.png)
+  
+ - Lista inventario por id
+  ![Imagen de contenedor descargada](recursos/getInventoryById.png) 
+ 
+ - Verifica actualización de inventario 
+  ![Imagen de contenedor descargada](recursos/VerifyInventoriLaptop10.png ) 
 
 
 - **Validaciones**
@@ -99,7 +129,7 @@ https://github.com/judithquelca/ecommerce-inventory-service
 		  messages:
 			basename: ValidationMessages
 
-  - Valicacion de orderservice
+  - Parametrizar las validaciones para order-service
 
 		order.product.notblank=El ID del producto es requerido
 		order.product.positive=El ID del producto debe ser positivo
@@ -140,7 +170,7 @@ https://github.com/judithquelca/ecommerce-inventory-service
 		) {
 		}
 
-		![Imagen de contenedor descargada](recursos/orderValid.png)
+	![Imagen de contenedor descargada](recursos/orderValid.png)
 
 
 	- Validacion de inventoryservice
@@ -194,10 +224,6 @@ https://github.com/judithquelca/ecommerce-inventory-service
   - ecommerce.orders.confirmed
   - ecommerce.orders.cancelled
   
-- Comandos documentados para crear/validar topics (`docker exec kafka ... kafka-topics ...`).
-- Producers y consumers configurados con `spring.kafka` y `spring.json.type.mapping`.
-- Evidencia en README (logs o captura) mostrando el flujo completo: orden → validación inventario → confirmación/cancelación.
-
 - Se verifica que Kafka está corriendo
 
 	- docker compose ps
@@ -206,7 +232,8 @@ https://github.com/judithquelca/ecommerce-inventory-service
   - Actualmente esta es la lista topics existentes
      
 	 - kafka-topics --bootstrap-server localhost:9092 --list
-       ![Imagen de contenedor descargada](recuarsos/listKafkaActual.png)
+	 
+    ![Imagen de contenedor descargada](recuarsos/listKafkaActual.png)
 
 			
 	- Con los siguientes comandos se actualiza el número de Topics
@@ -217,9 +244,9 @@ https://github.com/judithquelca/ecommerce-inventory-service
 		  kafka-topics --bootstrap-server localhost:9092 --alter --topic ecommerce.orders.cancelled --partitions 5
 		  kafka-topics --bootstrap-server localhost:9092 --alter --topic ecommerce.inventory.updated --partitions 5
 
-		![Imagen de contenedor descargada](recursos/updateParticionKafk.png)
+		![Imagen de contenedor descargada](recursos/updateParticionKafka.png)
 		![Imagen de contenedor descargada](recursos/productsTopic.png)
-		![Imagen de contenedor descargada](recursos/orderPlacedTpic.png)
+		![Imagen de contenedor descargada](recursos/orderPlacedTopic.png)
 		![Imagen de contenedor descargada](recursos/orderConfirmTopic.png)
 		![Imagen de contenedor descargada](recursos/orderCancelledTopic.png)
 		![Imagen de contenedor descargada](recursos/inventoryTopic.png)
