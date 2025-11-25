@@ -250,32 +250,32 @@ https://github.com/judithquelca/ecommerce-inventory-service
 		
 		![Imagen de contenedor descargada](recursos/inventoryTopic.png)
 
-  - Configuracion de kafka con `spring.kafka` y `spring.json.type.mapping`.
+  - Configuración de kafka con `spring.kafka` y `spring.json.type.mapping`.
 	
-		- productservice
+	- productservice
 		
-		  ![Imagen de contenedor descargada](recursos/inventoryTopic.png)
+		![Imagen de contenedor descargada](recursos/inventoryTopic.png)
 		  
-		  ![Imagen de contenedor descargada](recursos/productKafka.png)  
+		![Imagen de contenedor descargada](recursos/productKafka.png)  
   
-		- orderservice
+	- orderservice
 		
 		![Imagen de contenedor descargada](recursos/orderKafka.png)
 	  
-		- inventoryservice
+	- inventoryservice
 		
 		![Imagen de contenedor descargada](recursos/inventoryKafka.png)
   
   
 -  Flujo con lo que se obtuvo de postman  
 
-		![Imagen de contenedor descargada](recursos/tresProducts.png)
+	![Imagen de contenedor descargada](recursos/tresProducts.png)
 		
-		![Imagen de contenedor descargada](recursos/ordenesCreadas.png)
+	![Imagen de contenedor descargada](recursos/ordenesCreadas.png)
 		
-		![Imagen de contenedor descargada](recursos/ordenConfirmada.png)
+	![Imagen de contenedor descargada](recursos/ordenConfirmada.png)
 		
-		![Imagen de contenedor descargada](recursos/ordenCancelada.png)
+	![Imagen de contenedor descargada](recursos/ordenCancelada.png)
 		
 
 ### Bases de datos y modelos
