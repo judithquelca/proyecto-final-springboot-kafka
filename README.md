@@ -227,7 +227,7 @@ https://github.com/judithquelca/ecommerce-inventory-service
      
 	 - kafka-topics --bootstrap-server localhost:9092 --list
 	 
-    ![Imagen de contenedor descargada](recuarsos/listKafkaActual.png)
+    ![Imagen de contenedor descargada](recursos/listKafkaActual.png)
 
 			
 	- Con los siguientes comandos se actualiza el número de Topics
@@ -239,30 +239,42 @@ https://github.com/judithquelca/ecommerce-inventory-service
 		  kafka-topics --bootstrap-server localhost:9092 --alter --topic ecommerce.inventory.updated --partitions 5
 
 		![Imagen de contenedor descargada](recursos/updateParticionKafka.png)
+		
 		![Imagen de contenedor descargada](recursos/productsTopic.png)
+		
 		![Imagen de contenedor descargada](recursos/orderPlacedTopic.png)
+		
 		![Imagen de contenedor descargada](recursos/orderConfirmTopic.png)
+		
 		![Imagen de contenedor descargada](recursos/orderCancelledTopic.png)
+		
 		![Imagen de contenedor descargada](recursos/inventoryTopic.png)
 
   - Configuracion de kafka con `spring.kafka` y `spring.json.type.mapping`.
 	
 		- productservice
+		
 		  ![Imagen de contenedor descargada](recursos/inventoryTopic.png)
+		  
 		  ![Imagen de contenedor descargada](recursos/productKafka.png)  
   
 		- orderservice
+		
 		![Imagen de contenedor descargada](recursos/orderKafka.png)
 	  
 		- inventoryservice
+		
 		![Imagen de contenedor descargada](recursos/inventoryKafka.png)
   
   
 -  Flujo con lo que se obtuvo de postman  
 
 		![Imagen de contenedor descargada](recursos/tresProducts.png)
+		
 		![Imagen de contenedor descargada](recursos/ordenesCreadas.png)
+		
 		![Imagen de contenedor descargada](recursos/ordenConfirmada.png)
+		
 		![Imagen de contenedor descargada](recursos/ordenCancelada.png)
 		
 
