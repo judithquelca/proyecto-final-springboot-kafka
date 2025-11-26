@@ -81,7 +81,7 @@ https://github.com/judithquelca/ecommerce-inventory-service
 	
 	![Imagen de contenedor descargada](recursos/orderConfirmed.png)	
 	
-	![Imagen de contenedor descargada](recursos/ordenesCanceladas.png)
+	![Imagen de contenedor descargada](recursos/orderCancelada.png)
 
 - **inventory-service**
 
@@ -276,6 +276,8 @@ https://github.com/judithquelca/ecommerce-inventory-service
 	![Imagen de contenedor descargada](recursos/ordenConfirmada.png)
 		
 	![Imagen de contenedor descargada](recursos/ordenCancelada.png)
+	
+	![Imagen de contenedor descargada](recursos/kafkaCanceled.png)	
 		
 
 ### Bases de datos y modelos
@@ -305,7 +307,7 @@ https://github.com/judithquelca/ecommerce-inventory-service
 			volumes:
 			  - postgres-data:/var/lib/postgresql/data
 
-	![Imagen de contenedor descargada](recursos/dockerPostgres.png
+	![Imagen de contenedor descargada](recursos/dockerPostgres.png)
 	
  - Se adiciona en el archivo pom.xml, la siguiente dependencia
  
@@ -315,12 +317,17 @@ https://github.com/judithquelca/ecommerce-inventory-service
 				<scope>runtime</scope>
 		</dependency>
 
-		![Imagen de contenedor descargada](recursos/pomPostgres.png)
+	![Imagen de contenedor descargada](recursos/pomPostgres.png)
 
-	- Entidades con relaciones correctas (Product–Category 1:N, etc.).
-	- Documenta el modelo de datos (tabla o diagrama) y cualquier constraint relevante.
+- Entidades con relaciones Product–Category 1:N
 	
-	diigramaProductoCategoria.png
+	![Imagen de contenedor descargada](recursos/claseProductCategory.png)
+	
+	
+- Diagrama con los tres microservicio con kafka
+	
+	![Imagen de contenedor descargada](recursos/tresMicroservicios.png)	
+	
 
 ### Configuración y variables 
 
