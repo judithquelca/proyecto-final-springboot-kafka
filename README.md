@@ -32,10 +32,15 @@ https://github.com/judithquelca/ecommerce-inventory-service
 - order-service
 
  ![Imagen de contenedor descargada](recursos/orderCapas.png)
+ 
+ ![Imagen de contenedor descargada](recursos/orderCapasDet.png)
+
 
 - inventory-service
 
  ![Imagen de contenedor descargada](recursos/inventoryCapas.png)
+ 
+ ![Imagen de contenedor descargada](recursos/inventoryCapasDet.png)
 
 
 #### Archivos de configuración
@@ -121,17 +126,17 @@ https://github.com/judithquelca/ecommerce-inventory-service
 
     - Parametrizar las validaciones para order-service
 
-		order.product.notblank=El ID del producto es requerido
-		order.product.positive=El ID del producto debe ser positivo
-		order.quantity.notblank =La cantidad es requerida
-		order.quantity.positivew=La cantidad debe ser positiva
-		order.quantity.max=La cantidad no puede exceder 100
-		order.name.notblank=El nombre del cliente es requerido
-		order.name.min=El nombre debe tener entre 3 y 100 caracteres
-		order.email.notblank=El email del cliente es requerido
-		order.email.email=El email debe ser válido
-		order.totalAmount.notblank=El monto total es requerido
-		order.totalAmount.positive=El monto total debe ser positivo
+			order.product.notblank=El ID del producto es requerido
+			order.product.positive=El ID del producto debe ser positivo
+			order.quantity.notblank =La cantidad es requerida
+			order.quantity.positivew=La cantidad debe ser positiva
+			order.quantity.max=La cantidad no puede exceder 100
+			order.name.notblank=El nombre del cliente es requerido
+			order.name.min=El nombre debe tener entre 3 y 100 caracteres
+			order.email.notblank=El email del cliente es requerido
+			order.email.email=El email debe ser válido
+			order.totalAmount.notblank=El monto total es requerido
+			order.totalAmount.positive=El monto total debe ser positivo
 
 
 		public record OrderRequest(
@@ -166,10 +171,10 @@ https://github.com/judithquelca/ecommerce-inventory-service
 
 	- Parametrizar las validaciones para inventoryservice
 	
-		inventory.product.notblank=El ID del producto es requerido
-		inventory.product.name=El nombre del producto es requerido
-		inventory.stock.notblank =El stock inicial es requerido
-		inventory.stock.positive=El stock inicial debe ser no negativo
+			inventory.product.notblank=El ID del producto es requerido
+			inventory.product.name=El nombre del producto es requerido
+			inventory.stock.notblank =El stock inicial es requerido
+			inventory.stock.positive=El stock inicial debe ser no negativo
 		
 
 		public record InventoryItemRequest (
