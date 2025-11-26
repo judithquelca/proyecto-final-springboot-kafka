@@ -102,23 +102,24 @@ https://github.com/judithquelca/ecommerce-inventory-service
 
 
 - **Validaciones**
+  - Para las validaciones se realizo lo siguiente:
 
-  - Crear archivo de ValidationMessages.properties
+    - Crear el archivo de ValidationMessages.properties
   
-  - Adicionar la dependencia en archivo pom.xml
+    - Adicionar la dependencia en archivo pom.xml
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
-  - Actualizar el archivo application.yml
+    - Actualizar el archivo application.yml
 
 		spring:
 		  messages:
 			basename: ValidationMessages
 
-  - Parametrizar las validaciones para order-service
+    - Parametrizar las validaciones para order-service
 
 		order.product.notblank=El ID del producto es requerido
 		order.product.positive=El ID del producto debe ser positivo
@@ -163,12 +164,13 @@ https://github.com/judithquelca/ecommerce-inventory-service
 	
 	![Imagen de contenedor descargada](recursos/validPositive.png)
 
-	- Validación de inventoryservice
+	- Parametrizar las validaciones para inventoryservice
 	
 		inventory.product.notblank=El ID del producto es requerido
 		inventory.product.name=El nombre del producto es requerido
 		inventory.stock.notblank =El stock inicial es requerido
 		inventory.stock.positive=El stock inicial debe ser no negativo
+		
 
 		public record InventoryItemRequest (
 
@@ -186,14 +188,13 @@ https://github.com/judithquelca/ecommerce-inventory-service
 
  - **Adición de la clase GlobalExceptionHandler**
 
-	- Crear las siguientes clases dentro del paquete exception
+	- Se creo las siguientes clases dentro del paquete exception
 		- ErrorResponse.java
         - ResourceNotFoundException.java
 		- GlobalExceptionHandler.java
 		
-    - Actualización para lanzar excepciones
-        - OrderService.java
-
+    - Se actualizó la clase OrderService.java para lanzar excepciones
+        
 			  @Transactional(readOnly = true)
 				public OrderResponse findById(Long id) {
 					Order order = orderRepository.findById(id)
@@ -324,7 +325,7 @@ https://github.com/judithquelca/ecommerce-inventory-service
 	![Imagen de contenedor descargada](recursos/claseProductCategory.png)
 	
 	
-- Diagrama con los tres microservicio con kafka
+- Diagrama con los tres microservicios con kafka
 	
 	![Imagen de contenedor descargada](recursos/tresMicroservicios.png)	
 	
